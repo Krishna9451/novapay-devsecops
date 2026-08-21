@@ -1,0 +1,15 @@
+services:
+   postgres:
+      image: postgres:16
+      environment:
+        POSTGRES_DB: novapay_db
+        POSTGRES_USER: novapay
+        POSTGRES_PASSWORD: novapay_dev
+      volumes:
+       - postgres_data:/var/lib/postgresql/data
+   api:
+    image: novapay-api:1.1
+    ports:
+      - "8080:8080"
+volumes:
+    postgres_data:

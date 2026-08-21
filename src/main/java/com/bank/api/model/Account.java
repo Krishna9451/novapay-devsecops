@@ -1,10 +1,20 @@
 package com.bank.api.model;
 
-public class Account {
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import jakarta.persistence.Column;
+import java.math.BigDecimal;
 
+@Entity
+@Table(name="accounts")
+public class Account {
+   @Id
     private Long id;
+   
+   @Column(name="customer_name")
     private String customerName;
-    private double balance;
+    private BigDecimal balance;
 
     public Long getId() {
         return id;
@@ -22,11 +32,11 @@ public class Account {
         this.customerName = customerName;
     }
 
-    public double getBalance() {
+    public BigDecimal getBalance() {
         return balance;
     }
 
-    public void setBalance(double balance) {
+    public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
 
