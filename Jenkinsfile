@@ -75,7 +75,30 @@ pipeline {
             trivy image --severity HIGH,CRITICAL --exit-code 1 novapay-api:1.3
           '''
         }
-      }       
+      }  
+     
+     stage('Docker Push') {
+      steps {
+        withCredentials([usernamePassword(
+            credentialsId: 'dockerhub-credentials',
+            usernameVariable: 'DOCKER_USERNAME',
+            passwordVariable: 'DOCKER_PASSWORD'
+        )]) {
+            sh '''
+                echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+                docker tag novapay-api:1.3 \
+                    "$DOCKER_USERNAME/novapay-api:1.3"
+
+                docker push "$DOCKER_USERNAME/novapay-api:1.3"
+
+                docker logout
+            '''
+            }
+        }
+      }     
+
+     
 
     }
 
