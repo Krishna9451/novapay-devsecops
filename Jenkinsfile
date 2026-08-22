@@ -56,7 +56,18 @@ pipeline {
 
           }
 
-       }       
+       }
+      stage('Docker image build'){
+
+        steps {
+
+          sh '''
+            docker build -t novapay-api:1.3 .
+           
+            '''
+         }
+
+      }       
 
     }
 
