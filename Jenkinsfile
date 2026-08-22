@@ -62,7 +62,7 @@ pipeline {
         steps {
 
           sh '''
-            docker build -t novapay-api:1.3 .
+            docker build --platform linux/amd64 -t novapay-api:1.4 .
            
             '''
          }
@@ -72,7 +72,7 @@ pipeline {
       stage('Trivy Check'){
         steps{
           sh '''
-            trivy image --severity HIGH,CRITICAL --exit-code 1 novapay-api:1.3
+            trivy image --severity HIGH,CRITICAL --exit-code 1 novapay-api:1.4
           '''
         }
       }  
@@ -87,10 +87,10 @@ pipeline {
             sh '''
                 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
-                docker tag novapay-api:1.3 \
-                    "$DOCKER_USERNAME/novapay-api:1.3"
+                docker tag novapay-api:1.4 \
+                    "$DOCKER_USERNAME/novapay-api:1.4"
 
-                docker push "$DOCKER_USERNAME/novapay-api:1.3"
+                docker push "$DOCKER_USERNAME/novapay-api:1.4"
 
                 docker logout
             '''
