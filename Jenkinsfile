@@ -67,6 +67,14 @@ pipeline {
             '''
          }
 
+      }
+      
+      stage('Trivy Check'){
+        steps{
+          sh '''
+            trivy image --severity HIGH,CRITICAL --exit-code 1 novapay-api:1.3
+          '''
+        }
       }       
 
     }
