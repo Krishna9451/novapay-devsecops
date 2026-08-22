@@ -48,6 +48,16 @@ pipeline {
                 '''
             }
         }
+        
+       stage('Maven Package'){
+          steps {
+
+           sh './mvnw clean package -DskipTests'
+
+          }
+
+       }       
+
     }
 
     post {
