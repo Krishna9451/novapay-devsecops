@@ -98,6 +98,20 @@ pipeline {
         }
       }     
 
+     stage('Test ec2 ssh'){
+        steps{
+          sshagent([ec2-ssh-credentials]){
+ 
+          sh '''
+            ssh -o StrictHostKeyChecking=no ubuntu@13.233.130.91    "echo ssh-ec2 connection established Successfully"
+          
+          '''
+
+         }
+
+        }
+     }
+
      
 
     }
