@@ -75,7 +75,20 @@ pipeline {
             trivy image --severity HIGH,CRITICAL --exit-code 1 novapay-api:1.4
           '''
         }
-      }  
+      } 
+
+      
+       stage('Check Jenkins Docker') {
+       steps {
+        sh '''
+            echo "DOCKER_HOST=$DOCKER_HOST"
+            docker context show
+            docker info | grep -E "Server Version|Operating System|Architecture"
+        '''
+      }
+     }  
+
+  
      
      stage('Docker Push') {
       steps {
