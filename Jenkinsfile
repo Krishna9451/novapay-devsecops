@@ -132,7 +132,7 @@ pipeline {
        steps {
          sshagent(['ubuntu']){
               sh '''
-                ssh -o StrictHostKeyCkecking=no ubuntu@13,233.130.91 '
+                ssh -o StrictHostKeyChecking=no ubuntu@13,233.130.91 '
                          echo "Waiting for API to start....."
                       for i in (1...30); do
                           if curl -sf http://localhost:8080/api/health; then 
