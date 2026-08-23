@@ -127,10 +127,36 @@ pipeline {
       }
     } 
    }   
+     stage('Deployed api healthcheck'){
+             
+       steps {
+         sshagent(['ubuntu']){
+              sh '''
+                ssh -o StrictHostKeyCkecking=no ubuntu@13,233.130.91 '
+                         echo "Waiting for API to start....."
+                      for i in (1...30); do
+                          if curl -sf http://localhost:8080/api/health; then 
+                                echo "API is healthy"
+                                exit 0
+                          fi
+                      
 
+                         echo "API not ready yet.."
+                         sleep 2
+                       done
+                      
+                       echo "API health check failed"
+                       docker logs novapay-api
+                       exit 1
+                    '
+                  '''
+                      
+         }
+       }
+     }
      
 
-    }
+}
 
     post {
         always {
