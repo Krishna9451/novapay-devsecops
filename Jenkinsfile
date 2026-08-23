@@ -111,19 +111,22 @@ pipeline {
         }
       }     
 
-     stage('Test ec2 ssh'){
+     stage('Deploy to EC2'){
         steps{
           sshagent(['ubuntu']){
  
           sh '''
-            ssh -o StrictHostKeyChecking=no ubuntu@13.233.130.91    "echo Ec2 SSH Connection established Successfully"
+            ssh -o StrictHostKeyChecking=no ubuntu@13.233.130.91  '
           
-          '''
+            docker pull yadavshrikrishna65/novapay-api:1.4
+            docker rm -f novapay-api || true
 
-         }
-
-        }
-     }
+            docker run -d --name novapay-api --network novapay-network -p 8080:8080  yadavshrikrishna65/novapay-api:1.4 
+         '
+        '''
+      }
+    } 
+   }   
 
      
 
