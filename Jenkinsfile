@@ -69,6 +69,37 @@ pipeline {
 
       }
       
+      stage ('Check Jenkins Image'){
+          steps {
+
+             sh '''
+                  echo "===Docker Context==="
+                  docker context show
+                  
+                  echo "===Image==="
+                  docker images novapay-api:1.4
+
+                  echo "===trivy verison==="
+                  trivy --version
+             
+                  echo "=== Image Architecture==="
+                  docker image inspect novapay-api:1.4 \
+                   --format 'OS={{.Os}} Architecture={{.Architecture}}'
+               
+             '''
+
+       
+           }       
+
+
+
+
+      }
+
+
+
+
+      
       stage('Trivy Check'){
         steps{
           sh '''
