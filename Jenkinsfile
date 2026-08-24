@@ -146,7 +146,7 @@ pipeline {
           sshagent(['ubuntu']){
  
           sh '''
-            ssh -o StrictHostKeyChecking=no ubuntu@13.233.130.91  '
+            ssh -o StrictHostKeyChecking=no ubuntu@15.206.158.234 '
           
             docker pull yadavshrikrishna65/novapay-api:1.4
             docker rm -f novapay-api || true
