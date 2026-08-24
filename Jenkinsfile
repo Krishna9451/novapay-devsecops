@@ -100,10 +100,9 @@ pipeline {
             sh '''
                 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
-                docker tag novapay-api:1.4 \
-                    "$DOCKER_USERNAME/novapay-api:1.4"
+                echo "Starting Docker Push..."
 
-                docker push "$DOCKER_USERNAME/novapay-api:1.4"
+                      timeout 120  docker push "$DOCKER_USERNAME/novapay-api:1.4"
 
                 docker logout
             '''
