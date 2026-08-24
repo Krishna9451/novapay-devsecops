@@ -133,7 +133,7 @@ pipeline {
 
                 echo "Starting Docker Push..."
 
-                      timeout 120  docker push "$DOCKER_USERNAME/novapay-api:1.4"
+                        docker push "$DOCKER_USERNAME/novapay-api:1.4"
 
                 docker logout
             '''
