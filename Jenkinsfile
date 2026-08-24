@@ -168,7 +168,7 @@ pipeline {
                           if curl -sf http://localhost:8080/api/health; then 
                                 echo "API is healthy"
                                 exit 0
-                                               
+                           fi                    
 
                          echo "API not ready yet.."
                          sleep 2
