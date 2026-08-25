@@ -1,5 +1,11 @@
 pipeline {
     agent any
+     
+    environment {
+      EC2_HOST= '13.207.105.146'
+      DOCKER_IMAGE= 'yadavshrikrishna65/novapay-api:1.4'
+    } 
+
 
     stages {
 
@@ -69,55 +75,13 @@ pipeline {
 
       }
       
-      stage ('Check Jenkins Image'){
-          steps {
-
-             sh '''
-                  echo "===Docker Context==="
-                  docker context show
-                  
-                  echo "===Image==="
-                  docker images novapay-api:1.4
-
-                  echo "===trivy verison==="
-                  trivy --version
-             
-                  echo "=== Image Architecture==="
-                  docker image inspect novapay-api:1.4 \
-                   --format 'OS={{.Os}} Architecture={{.Architecture}}'
-               
-             '''
-
-       
-           }       
-
-
-
-
-      }
-
-
-
-
-      
-      stage('Trivy Check'){
+     stage('Trivy Check'){
         steps{
           sh '''
             trivy image --severity HIGH,CRITICAL --exit-code 1 novapay-api:1.4
           '''
         }
-      } 
-
-      
-       stage('Check Jenkins Docker') {
-       steps {
-        sh '''
-            echo "DOCKER_HOST=$DOCKER_HOST"
-            docker context show
-            docker info | grep -E "Server Version|Operating System|Architecture"
-        '''
-      }
-     }  
+      }   
 
   
      
@@ -146,7 +110,7 @@ pipeline {
           sshagent(['ubuntu']){
  
           sh '''
-            ssh -o StrictHostKeyChecking=no ubuntu@15.206.158.234 '
+            ssh -o StrictHostKeyChecking=no ubuntu@$EC2_HOST '
           
             docker pull yadavshrikrishna65/novapay-api:1.4
             docker rm -f novapay-api || true
@@ -162,7 +126,7 @@ pipeline {
        steps {
          sshagent(['ubuntu']){
               sh '''
-                ssh -o StrictHostKeyChecking=no ubuntu@15.206.158.234 '
+                ssh -o StrictHostKeyChecking=no ubuntu@$EC2_HOST '
                          echo "Waiting for API to start....."
                       for i in {1..30}; do
                           if curl -sf http://localhost:8080/api/health; then 
