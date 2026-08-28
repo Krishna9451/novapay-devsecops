@@ -23,7 +23,13 @@ spec:
               value: jdbc:postgresql://postgres:5432/novapay_db
 
             - name: SPRING_DATASOURCE_USERNAME
-              value: novapay
+              valueFrom:
+               secretKeyRef:
+                    name: postgres-secret
+                    key: username
 
             - name: SPRING_DATASOURCE_PASSWORD
-              value: novapay_dev 
+              valueFrom:
+               secretKeyRef:
+                     name: postgres-secret
+                     key: password
