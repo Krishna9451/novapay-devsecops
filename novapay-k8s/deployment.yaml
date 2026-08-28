@@ -33,3 +33,17 @@ spec:
                secretKeyRef:
                      name: postgres-secret
                      key: password
+     
+           readinessProbe:
+               httpGet:
+                 path: /api/health
+                 port: 8080
+               initialDelaySeconds: 10
+               periodSeconds: 5
+
+           livenessProbe:
+               httpGet:
+                 path: /api/health
+                 port: 8080
+               initialDelaySeconds: 20
+               periodSeconds: 10
