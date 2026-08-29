@@ -1,10 +1,9 @@
 pipeline {
     agent any
-     
+
     environment {
-      EC2_HOST= '13.207.105.146'
-      DOCKER_IMAGE= 'yadavshrikrishna65/novapay-api:1.4'
-    } 
+      DOCKER_IMAGE= 'yadavshrikrishna65/novapay-api:1.4-arm64'
+    }
 
 
     stages {
@@ -54,7 +53,7 @@ pipeline {
                 '''
             }
         }
-        
+
        stage('Maven Package'){
           steps {
 
@@ -68,23 +67,23 @@ pipeline {
         steps {
 
           sh '''
-            docker build --platform linux/amd64 -t novapay-api:1.4 .
-           
+            docker build --platform linux/arm64 -t novapay-api:1.4-arm64 .
+
             '''
          }
 
       }
-      
+
      stage('Trivy Check'){
         steps{
           sh '''
-            trivy image --severity HIGH,CRITICAL --exit-code 1 novapay-api:1.4
+            trivy image --severity HIGH,CRITICAL --exit-code 1 novapay-api:1.4-arm64
           '''
         }
-      }   
+      }
 
-  
-     
+
+
      stage('Docker Push') {
       steps {
         withCredentials([usernamePassword(
@@ -97,57 +96,22 @@ pipeline {
 
                 echo "Starting Docker Push..."
 
-                        docker push "$DOCKER_USERNAME/novapay-api:1.4"
+                        docker push "$DOCKER_USERNAME/novapay-api:1.4-arm64"
 
                 docker logout
             '''
             }
         }
-      }     
-
-     stage('Deploy to EC2'){
-        steps{
-          sshagent(['ubuntu']){
- 
-          sh '''
-            ssh -o StrictHostKeyChecking=no ubuntu@$EC2_HOST '
-          
-            docker pull yadavshrikrishna65/novapay-api:1.4
-            docker rm -f novapay-api || true
-
-            docker run -d --name novapay-api --network novapay-network -p 8080:8080  yadavshrikrishna65/novapay-api:1.4 
-         '
-        '''
       }
-    } 
-   }   
-     stage('Deployed api healthcheck'){
-             
-       steps {
-         sshagent(['ubuntu']){
-              sh '''
-                ssh -o StrictHostKeyChecking=no ubuntu@$EC2_HOST '
-                         echo "Waiting for API to start....."
-                      for i in {1..30}; do
-                          if curl -sf http://localhost:8080/api/health; then 
-                                echo "API is healthy"
-                                exit 0
-                           fi                    
+    stage('Deploy to Kubernetes'){
+        steps {
+        sh '''
+          kubectl --kubeconfig=/var/lib/jenkins/.kube/config apply -f novapay-k8s/
+        '''
 
-                         echo "API not ready yet.."
-                         sleep 2
-                       done
-                      
-                       echo "API health check failed"
-                       docker logs novapay-api
-                       exit 1
-                    '
-                  '''
-                      
-         }
-       }
-     }
-     
+        }
+    }
+
 
 }
 
