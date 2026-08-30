@@ -44,13 +44,15 @@ pipeline {
         stage('Maven Test') {
             steps {
                 sh '''
+                  mkdir -p "$PWD/.m2"
                     docker run --rm \
                       --network novapay-ci-network \
                       --user "$(id -u):$(id -g)" \
+                     -v "$PWD/.m2:/tmp/maven-repo"\
                       -v "$PWD:/workspace" \
                       -w /workspace \
                       maven:3.9-eclipse-temurin-21 \
-                      mvn test
+                      mvn -Dmaven.repo.local=/tmp/maven-repo test
                 '''
             }
         }
