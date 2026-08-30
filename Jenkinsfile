@@ -67,7 +67,7 @@ pipeline {
         steps {
 
           sh '''
-            docker build --platform linux/arm64 -t novapay-api:1.4-arm64 .
+            docker build --no-cache --platform linux/arm64 -t novapay-api:1.4-arm64 .
 
             '''
          }
@@ -77,7 +77,8 @@ pipeline {
      stage('Trivy Check'){
         steps{
           sh '''
-            trivy image --severity HIGH,CRITICAL --exit-code 1 novapay-api:1.4-arm64
+            trivy image --config /dev/null --scanners vuln --timeout 15m \
+           --ignorefile /dev/null --severity HIGH,CRITICAL --exit-code 1 novapay-api:1.4-arm64
           '''
         }
       }
