@@ -46,6 +46,7 @@ pipeline {
                 sh '''
                     docker run --rm \
                       --network novapay-ci-network \
+                      --user "$(id -u):$(id -g)"
                       -v "$PWD:/workspace" \
                       -w /workspace \
                       maven:3.9-eclipse-temurin-21 \
