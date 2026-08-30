@@ -212,6 +212,12 @@ kubectl apply -f novapay-k8s/
 
 This means a green pipeline run results in an automatically updated, running deployment — no manual `kubectl` steps required.
 
+**Sample successful pipeline run:**
+
+![Jenkins Pipeline Run](jenkins-pipeline-run.png)
+
+*A complete pipeline execution showing all stages — Checkout, PostgreSQL test container startup, Maven test/package, Docker build, Trivy scan, Docker Hub push, and Kubernetes deployment — completing successfully.*
+
 ---
 
 ## 5. DevSecOps Security Implementation
