@@ -331,6 +331,12 @@ Following a successful Jenkins-triggered deployment, the cluster reflects the fo
 - ✅ Novapay NodePort Service available
 - ✅ PostgreSQL ClusterIP Service available
 
+  **Cluster state after deployment:**
+
+![Kubernetes Pods Running](kubectl-get-pods.png)
+
+*Output of `kubectl get pods` showing 5 Novapay API pods and 1 PostgreSQL pod in a Running/Ready state after the pipeline's Kubernetes deployment stage completed.*
+
 ---
 
 ## 9. Docker Compose
