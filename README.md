@@ -595,11 +595,12 @@ This project demonstrates the ability to:
 
 ## 19. Author / Connect
 
-**Author:** _Your Name Here_
+**Author:** Shri Krishna Yadav
 
 - GitHub: https://github.com/Krishna9451
 - LinkedIn: https://www.linkedin.com/in/shri-krishna-yadav-9444412a2/
 - Email: yadavshrikrishna65@gmail.com
+- Twitter(X): https://x.com/Shri_Krishna_Y
 
 ---
 
