@@ -1,0 +1,14 @@
+serverFiles:
+  alerting_rules.yml:
+    groups:
+      - name: novapay-alerts
+        rules:
+          - alert: NovaPayHighCPU
+            expr: sum(rate(container_cpu_usage_seconds_total{pod=~"novapay-api-.*"}[5m])) * 100 > 70
+            for: 2m
+            labels:
+              severity: warning
+              application: novapay
+            annotations:
+              summary: "NovaPay CPU usage is high"
+              description: "NovaPay CPU usage has been above 70% for more than 2 minutes."
