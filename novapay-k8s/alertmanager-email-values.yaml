@@ -1,0 +1,27 @@
+alertmanager:
+ config:
+  global:
+    smtp_smarthost: 'smtp.gmail.com:587'
+    smtp_from: 'yadavshrikrishna65@gmail.com'
+    smtp_auth_username: 'yadavshrikrishna65@gmail.com'
+    smtp_auth_password_file: '/etc/secrets/smtp-auth-password'
+    smtp_require_tls: true
+
+  route:
+    group_wait: 10s
+    group_interval: 5m
+    receiver: novapay-email
+    repeat_interval: 3h
+
+  receivers:
+    - name: novapay-email
+      email_configs:
+        - to: 'yadavshrikrishna65@gmail.com'
+          send_resolved: true
+
+ extraSecretMounts:
+  - name: alertmanager-gmail
+    mountPath: /etc/secrets
+    subPath: ""
+    secretName: alertmanager-gmail
+    readOnly: true

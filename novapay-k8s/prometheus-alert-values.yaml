@@ -12,3 +12,4 @@ serverFiles:
             annotations:
               summary: "NovaPay CPU usage is high"
               description: "NovaPay CPU usage has been above 70% for more than 2 minutes."
+      
